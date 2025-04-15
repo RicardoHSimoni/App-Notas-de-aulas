@@ -29,14 +29,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  List<String> _disciplinas = ['DM', 'POO'];
-  List<String> _anotacoes = [];
+  String? _disciplinaSelecionada;
+  Map<String, List<String>> _disciplinasComAnotacoes = {
+    'DM': [],
+    'POO': [],
+  };
 
   void _adicionarAnotacao(String anotacao) {
-    setState(() {
-      _anotacoes.add(anotacao);
-    });
+    if (_disciplinaSelecionada != null) {
+      setState(() {
+        _disciplinasComAnotacoes[_disciplinaSelecionada]!.add(anotacao);
+      });
+    }
   }
 
   void _mostrarAdicionarAnotacao() {
@@ -72,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _adicionarDisciplina(String disciplina) {
     setState(() {
-      _disciplinas.add(disciplina);
+      _disciplinasComAnotacoes[disciplina] = [];
     });
   }
 
@@ -118,10 +122,13 @@ class _MyHomePageState extends State<MyHomePage> {
               decoration: BoxDecoration(color: Colors.deepPurple),
               child: Text('Disciplinas'),
             ),
-            ..._disciplinas.map(
+            ..._disciplinasComAnotacoes.keys.map(
               (disciplina) => ListTile(
                 title: Text(disciplina),
                 onTap: () {
+                  setState(() {
+                    _disciplinaSelecionada = disciplina;
+                  });
                   Navigator.pop(context);
                 },
               ),
@@ -131,41 +138,57 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            alignment: Alignment.centerRight,
-            tooltip: 'Anotações',
-            onPressed: () {
-              _mostrarAdicionarAnotacao();
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Botão da AppBar pressionado!')),
-              );
-            },
-          ),
-        ],
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Text(widget.title),
+                IconButton(
+                  icon: const Icon(Icons.add),
+                  tooltip: 'Adicionar Disciplina',
+                  onPressed: _mostrarAdicionarDisciplina,
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text('Lista de Anotações:'),
-            Expanded(
-              child: ListView.builder(
-                itemCount: _anotacoes.length,
-                itemBuilder: (context, index) {
-                  return ListTile(title: Text(_anotacoes[index]));
-                },
-              ),
+            Text(
+              _disciplinaSelecionada != null
+                  ? 'Anotações para ${_disciplinaSelecionada!}:'
+                  : 'Selecione uma disciplina no menu.',
             ),
+            if (_disciplinaSelecionada != null)
+              Expanded(
+                child: ListView.builder(
+                  itemCount: _disciplinasComAnotacoes[_disciplinaSelecionada]!.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(_disciplinasComAnotacoes[_disciplinaSelecionada!]![index]),
+                    );
+                  },
+                ),
+              ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _mostrarAdicionarDisciplina,
-        tooltip: 'Adicionar Disciplina',
-        child: const Icon(Icons.add),
+        onPressed: () {
+          if (_disciplinaSelecionada != null) {
+            _mostrarAdicionarAnotacao();
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Selecione uma disciplina primeiro!')),
+            );
+          }
+        },
+        tooltip: 'Adicionar Anotação',
+        child: const Icon(Icons.note_add),
       ),
     );
   }
