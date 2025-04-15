@@ -31,11 +31,43 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   List<String> _disciplinas = ['DM', 'POO'];
+  List<String> _anotacoes = [];
 
-  void _incrementCounter() {
+  void _adicionarAnotacao(String anotacao) {
     setState(() {
-      _counter++;
+      _anotacoes.add(anotacao);
     });
+  }
+
+  void _mostrarAdicionarAnotacao() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        TextEditingController _controller = TextEditingController();
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: _controller,
+                decoration: const InputDecoration(labelText: 'Nova anotação'),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  if (_controller.text.isNotEmpty) {
+                    _adicionarAnotacao(_controller.text);
+                    Navigator.pop(context);
+                  }
+                },
+                child: const Text('Adicionar'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   void _adicionarDisciplina(String disciplina) {
@@ -49,7 +81,6 @@ class _MyHomePageState extends State<MyHomePage> {
       context: context,
       builder: (BuildContext context) {
         TextEditingController _controller = TextEditingController();
-
         return Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -57,9 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               TextField(
                 controller: _controller,
-                decoration: const InputDecoration(
-                  labelText: 'Nova disciplina',
-                ),
+                decoration: const InputDecoration(labelText: 'Nova disciplina'),
               ),
               const SizedBox(height: 16),
               ElevatedButton(
@@ -86,32 +115,49 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.deepPurple,
-              ),
+              decoration: BoxDecoration(color: Colors.deepPurple),
               child: Text('Disciplinas'),
             ),
-            ..._disciplinas.map((disciplina) => ListTile(
-                  title: Text(disciplina),
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                )),
+            ..._disciplinas.map(
+              (disciplina) => ListTile(
+                title: Text(disciplina),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
           ],
         ),
       ),
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            alignment: Alignment.centerRight,
+            tooltip: 'Anotações',
+            onPressed: () {
+              _mostrarAdicionarAnotacao();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Botão da AppBar pressionado!')),
+              );
+            },
+          ),
+        ],
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            const Text('Lista de Anotações:'),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _anotacoes.length,
+                itemBuilder: (context, index) {
+                  return ListTile(title: Text(_anotacoes[index]));
+                },
+              ),
             ),
           ],
         ),
