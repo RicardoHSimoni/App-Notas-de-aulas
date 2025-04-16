@@ -11,8 +11,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'App de notas',
+      debugShowCheckedModeBanner: false, 
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        scaffoldBackgroundColor: const Color(0xFFFFEBEE), 
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color.fromRGBO(244, 153, 194, 1),
+        ),
+        useMaterial3: true,
       ),
       home: const MyHomePage(title: 'App de notas'),
     );
@@ -119,8 +124,23 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.deepPurple),
-              child: Text('Disciplinas'),
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 237, 136, 149),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    backgroundImage: AssetImage('assets/kawaii_note_icon.jpg'),
+                    radius: 40,
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    'Disciplinas',
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                ],
+              ),
             ),
             ..._disciplinasComAnotacoes.keys.map(
               (disciplina) => ListTile(
@@ -154,29 +174,29 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              _disciplinaSelecionada != null
-                  ? 'Anotações para ${_disciplinaSelecionada!}:'
-                  : 'Selecione uma disciplina no menu.',
-            ),
-            if (_disciplinaSelecionada != null)
-              Expanded(
-                child: ListView.builder(
-                  itemCount: _disciplinasComAnotacoes[_disciplinaSelecionada]!.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(_disciplinasComAnotacoes[_disciplinaSelecionada!]![index]),
-                    );
-                  },
+      body: _disciplinaSelecionada != null
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Anotações para ${_disciplinaSelecionada!}:'),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: _disciplinasComAnotacoes[_disciplinaSelecionada]!.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(_disciplinasComAnotacoes[_disciplinaSelecionada!]![index]),
+                      );
+                    },
+                  ),
                 ),
+              ],
+            )
+          : const Center(
+              child: Text(
+                'Selecione uma disciplina no menu.',
+                style: TextStyle(fontSize: 16),
               ),
-          ],
-        ),
-      ),
+            ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           if (_disciplinaSelecionada != null) {
