@@ -156,6 +156,8 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+
+
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Row(
@@ -174,6 +176,9 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+
+
+
       body: _disciplinaSelecionada != null
           ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -181,14 +186,33 @@ class _MyHomePageState extends State<MyHomePage> {
                 Text('Anotações para ${_disciplinaSelecionada!}:'),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: _disciplinasComAnotacoes[_disciplinaSelecionada]!.length,
+                    itemCount: _disciplinasComAnotacoes[_disciplinaSelecionada!]!.length,
                     itemBuilder: (context, index) {
                       return ListTile(
                         title: Text(_disciplinasComAnotacoes[_disciplinaSelecionada!]![index]),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.delete),
+                          onPressed: () {
+                            setState(() {
+                              _disciplinasComAnotacoes[_disciplinaSelecionada!]!.removeAt(index);
+                            });
+                          },
+                        ),
                       );
                     },
                   ),
                 ),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_disciplinaSelecionada != null) {
+                      setState(() {
+                        _disciplinasComAnotacoes[_disciplinaSelecionada]!.clear();
+                      });
+                    }
+                  },
+                  child: const Text('Remover todas as anotações'),
+                ),
+                
               ],
             )
           : const Center(
@@ -197,6 +221,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: TextStyle(fontSize: 16),
               ),
             ),
+
+            
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           if (_disciplinaSelecionada != null) {

@@ -1,20 +1,23 @@
 <<<<<<< HEAD
 # App-Notas-de-aulas
 =======
-# flutter_application_1
 
-A new Flutter project.
+
+Um projeto em flutter desenvolvido para matéria de Desenvolvimento de Aplicações para Dispositivos Móveis, na Universidade Tecnológica Federal do Paraná 
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+O projeto consiste em um simples aplicativo para criar anotações referentes às disciplinas. 
 
-A few resources to get you started if this is your first Flutter project:
+Instruções de uso:
+O botão no formato de três riscos no canto superior esquerdo abre um menu com as disciplinas do aluno, selecionando uma delas é redirecionado para as anotações daquela matéria. Com o botão no canto inferior direito é possível adicionar novas anotações para a matéria selecionada. Ao lado do título da aplicação na parte superior da tela há ainda outro botão que permite adicionar novas matérias ou assuntos, esses novas matérias ficam junto com as demais no menu lateral. Ao lado de cada anotação há um ícone em formato de lixeira que permite a exclusão daquela anotação e no final da página um botão que remove todas as anotações daquela disciplina;
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Funcionalidades implementadas:
+Drawer com listagem das matérias do aluno;
+Separação das anotações feitas por matéria;
+Floating action button que permite adição de novas anotações;
+Botão na app bar para criação de novas disciplinas ou assuntos;
+Personalização com cores e imagens;
+Botão de exclusão de anotação única ou de exclusão geral;
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
 >>>>>>> c7cd03d (Commit inicial)
