@@ -35,7 +35,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String? _disciplinaSelecionada;
-  Map<String, List<String>> _disciplinasComAnotacoes = {
+  final Map<String, List<String>> _disciplinasComAnotacoes = {
     'DM': [],
     'POO': [],
   };
@@ -52,21 +52,21 @@ class _MyHomePageState extends State<MyHomePage> {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        TextEditingController _controller = TextEditingController();
+        TextEditingController controller = TextEditingController();
         return Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
-                controller: _controller,
+                controller: controller,
                 decoration: const InputDecoration(labelText: 'Nova anotação'),
               ),
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
-                  if (_controller.text.isNotEmpty) {
-                    _adicionarAnotacao(_controller.text);
+                  if (controller.text.isNotEmpty) {
+                    _adicionarAnotacao(controller.text);
                     Navigator.pop(context);
                   }
                 },
@@ -89,21 +89,21 @@ class _MyHomePageState extends State<MyHomePage> {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        TextEditingController _controller = TextEditingController();
+        TextEditingController controller = TextEditingController();
         return Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
-                controller: _controller,
+                controller: controller,
                 decoration: const InputDecoration(labelText: 'Nova disciplina'),
               ),
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
-                  if (_controller.text.isNotEmpty) {
-                    _adicionarDisciplina(_controller.text);
+                  if (controller.text.isNotEmpty) {
+                    _adicionarDisciplina(controller.text);
                     Navigator.pop(context);
                   }
                 },
